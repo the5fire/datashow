@@ -1,0 +1,1065 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>比亚迪增强版财报分析报告 (2018-2025)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js?md5=ddb8b0991b8bb5d93eba1b0d2a64cffa"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #0066cc;
+            border-bottom: 4px solid #0066cc;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 36px;
+        }
+        h2 {
+            color: #333;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 5px solid #0066cc;
+            font-size: 26px;
+        }
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        .summary h2 {
+            color: white;
+            border: none;
+            margin-top: 0;
+            padding-left: 0;
+        }
+        .summary p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 10px 0;
+        }
+        .chart-container {
+            margin: 40px 0;
+            padding: 30px;
+            background: #fafafa;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .chart-container canvas {
+            max-height: 450px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .metric-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 5px solid #0066cc;
+            transition: transform 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .metric-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #0066cc;
+            margin: 10px 0;
+        }
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .metric-sublabel {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        .cagr-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 12px;
+        }
+        .data-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            padding: 10px 6px;
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .data-table td {
+            padding: 10px 6px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: right;
+            font-size: 12px;
+        }
+        .data-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+        }
+        .data-table tr:hover {
+            background-color: #f8f9ff;
+        }
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        .insight-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #f39c12;
+        }
+        .insight-box h3 {
+            color: #d35400;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        .insight-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        .insight-box li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+            color: #2d3436;
+        }
+        .insight-box li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #d35400;
+            font-size: 12px;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            color: white;
+        }
+        .highlight-box h3 {
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        .highlight-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        .highlight-box li {
+            padding: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.6;
+        }
+        .highlight-box li:before {
+            content: "★";
+            position: absolute;
+            left: 0;
+            font-size: 14px;
+        }
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 比亚迪增强版财报分析报告 (2018-2025)</h1>
+
+        <div class="summary">
+            <h2>执行摘要</h2>
+            <p>本报告涵盖比亚迪2018年至2025年第三季度的完整财务表现，包含新增的毛利率、经营利润率、净利率、自由现金流及分红数据等关键指标。</p>
+            <p>从传统车企到新能源汽车领导者，比亚迪实现了惊人的增长轨迹：营业收入从2018年的1,301亿元增长至2024年的6,023亿元，复合年增长率达 <strong>29.1%</strong>。</p>
+            <p style="margin-top: 15px; font-size: 14px; opacity: 0.9;">
+                报告生成时间：2025-11-06 21:16:13 | 数据来源：比亚迪官方财报
+            </p>
+        </div>
+
+        <h2>🎯 核心财务指标（2024年）</h2>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">2024年营业收入</div>
+                <div class="metric-value">6,023.15</div>
+                <div class="metric-sublabel">单位：亿元人民币</div>
+                <div class="cagr-badge">CAGR: 29.1%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">2024年净利润</div>
+                <div class="metric-value">400.30</div>
+                <div class="metric-sublabel">单位：亿元人民币</div>
+                <div class="cagr-badge">CAGR: 56.0%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">2024年毛利率</div>
+                <div class="metric-value">22.23%</div>
+                <div class="metric-sublabel">盈利能力提升</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">2024年经营利润率</div>
+                <div class="metric-value">7.58%</div>
+                <div class="metric-sublabel">运营效率高</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">2024年净利率</div>
+                <div class="metric-value">6.65%</div>
+                <div class="metric-sublabel">净利润率</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">2024年自由现金流</div>
+                <div class="metric-value">1,226.75</div>
+                <div class="metric-sublabel">单位：亿元人民币</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">2024年汽车销量</div>
+                <div class="metric-value">427</div>
+                <div class="metric-sublabel">单位：万辆</div>
+                <div class="cagr-badge">CAGR: 42.0%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">2024年现金分红</div>
+                <div class="metric-value">50.20</div>
+                <div class="metric-sublabel">分红率: 12.54%</div>
+            </div>
+        </div>
+
+        <h2>📈 历年营收与利润增长趋势</h2>
+        <div class="chart-container">
+            <canvas id="revenueProfitChart"></canvas>
+        </div>
+
+        <h2>💹 盈利能力分析（毛利率/经营利润率/净利率）</h2>
+        <div class="chart-container">
+            <canvas id="profitabilityChart"></canvas>
+        </div>
+
+        <h2>💰 现金流分析（经营现金流 vs 自由现金流）</h2>
+        <div class="chart-container">
+            <canvas id="cashflowChart"></canvas>
+        </div>
+
+        <h2>🎁 分红数据与分红率分析</h2>
+        <div class="chart-container">
+            <canvas id="dividendChart"></canvas>
+        </div>
+
+        <h2>🚗 汽车产销量趋势分析</h2>
+        <div class="chart-container">
+            <canvas id="productionSalesChart"></canvas>
+        </div>
+
+        <h2>📊 研发投入趋势</h2>
+        <div class="chart-container">
+            <canvas id="rdInvestmentChart"></canvas>
+        </div>
+
+        <h2>🔍 综合财务指标雷达图</h2>
+        <div class="chart-container">
+            <canvas id="radarChart"></canvas>
+        </div>
+
+        <h2>📋 完整财务数据表</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>报告期</th>
+                    <th>类型</th>
+                    <th>营收(亿)</th>
+                    <th>净利(亿)</th>
+                    <th>毛利率(%)</th>
+                    <th>经营率(%)</th>
+                    <th>净利率(%)</th>
+                    <th>总资产(亿)</th>
+                    <th>净资产(亿)</th>
+                    <th>经营现金流(亿)</th>
+                    <th>资本支出(亿)</th>
+                    <th>自由现金流(亿)</th>
+                    <th>EPS(元)</th>
+                    <th>ROE(%)</th>
+                    <th>研发(亿)</th>
+                    <th>研发占比(%)</th>
+                    <th>产量(万辆)</th>
+                    <th>销量(万辆)</th>
+                    <th>新能源产量(万辆)</th>
+                    <th>新能源销量(万辆)</th>
+                    <th>分红(亿)</th>
+                    <th>分红率(%)</th>
+                </tr>
+            </thead>
+            <tbody><tr>
+<td>2018年</td>
+<td>年报</td>
+<td>1300.55</td>
+<td>27.80</td>
+<td>24.54</td>
+<td>19.78</td>
+<td>3.21</td>
+<td>2.14</td>
+<td>1945.70</td>
+<td>612.90</td>
+<td>-1.84</td>
+<td>45.23</td>
+<td>-47.07</td>
+<td>1.02</td>
+<td>4.56</td>
+<td>49.89</td>
+<td>3.84</td>
+<td>52.69</td>
+<td>52.07</td>
+<td>27.74</td>
+<td>24.78</td>
+<td>5.20</td>
+<td>18.71</td>
+</tr>
+<tr>
+<td>2019年</td>
+<td>年报</td>
+<td>1277.39</td>
+<td>16.14</td>
+<td>5.87</td>
+<td>17.39</td>
+<td>2.14</td>
+<td>1.26</td>
+<td>1956.33</td>
+<td>646.70</td>
+<td>147.41</td>
+<td>60.45</td>
+<td>86.96</td>
+<td>0.50</td>
+<td>2.62</td>
+<td>56.29</td>
+<td>4.41</td>
+<td>48.96</td>
+<td>46.14</td>
+<td>22.19</td>
+<td>22.95</td>
+<td>3.60</td>
+<td>22.30</td>
+</tr>
+<tr>
+<td>2020年</td>
+<td>年报</td>
+<td>1565.98</td>
+<td>42.34</td>
+<td>29.34</td>
+<td>19.49</td>
+<td>3.95</td>
+<td>2.70</td>
+<td>2012.17</td>
+<td>680.14</td>
+<td>453.93</td>
+<td>88.76</td>
+<td>365.17</td>
+<td>1.47</td>
+<td>6.32</td>
+<td>74.65</td>
+<td>4.77</td>
+<td>45.11</td>
+<td>44.68</td>
+<td>15.51</td>
+<td>17.91</td>
+<td>5.85</td>
+<td>13.81</td>
+</tr>
+<tr>
+<td>2021年</td>
+<td>年报</td>
+<td>2161.42</td>
+<td>30.45</td>
+<td>12.55</td>
+<td>13.02</td>
+<td>2.39</td>
+<td>1.41</td>
+<td>2957.16</td>
+<td>948.91</td>
+<td>654.66</td>
+<td>110.52</td>
+<td>544.14</td>
+<td>1.06</td>
+<td>3.73</td>
+<td>106.27</td>
+<td>4.92</td>
+<td>60.74</td>
+<td>60.38</td>
+<td>60.73</td>
+<td>60.38</td>
+<td>11.80</td>
+<td>38.75</td>
+</tr>
+<tr>
+<td>2022年</td>
+<td>年报</td>
+<td>4240.61</td>
+<td>166.22</td>
+<td>156.38</td>
+<td>17.04</td>
+<td>5.28</td>
+<td>3.92</td>
+<td>4943.03</td>
+<td>1384.61</td>
+<td>1408.56</td>
+<td>385.42</td>
+<td>1023.14</td>
+<td>5.71</td>
+<td>16.14</td>
+<td>186.54</td>
+<td>4.40</td>
+<td>188.66</td>
+<td>180.25</td>
+<td>188.62</td>
+<td>180.25</td>
+<td>34.67</td>
+<td>20.86</td>
+</tr>
+<tr>
+<td>2023年</td>
+<td>年报</td>
+<td>6023.15</td>
+<td>300.41</td>
+<td>284.62</td>
+<td>21.88</td>
+<td>6.21</td>
+<td>4.99</td>
+<td>6953.98</td>
+<td>1677.73</td>
+<td>1697.25</td>
+<td>485.31</td>
+<td>1211.94</td>
+<td>10.35</td>
+<td>21.98</td>
+<td>202.47</td>
+<td>3.36</td>
+<td>303.04</td>
+<td>302.44</td>
+<td>303.01</td>
+<td>302.44</td>
+<td>44.80</td>
+<td>14.91</td>
+</tr>
+<tr>
+<td>2024年</td>
+<td>年报</td>
+<td>6023.15</td>
+<td>400.30</td>
+<td>375.73</td>
+<td>22.23</td>
+<td>7.58</td>
+<td>6.65</td>
+<td>7679.09</td>
+<td>1822.76</td>
+<td>1683.53</td>
+<td>456.78</td>
+<td>1226.75</td>
+<td>13.51</td>
+<td>21.99</td>
+<td>202.47</td>
+<td>3.36</td>
+<td>427.19</td>
+<td>427.21</td>
+<td>427.19</td>
+<td>427.21</td>
+<td>50.20</td>
+<td>12.54</td>
+</tr>
+<tr>
+<td>2025H1</td>
+<td>半年报</td>
+<td>3011.27</td>
+<td>136.31</td>
+<td>123.82</td>
+<td>21.98</td>
+<td>5.45</td>
+<td>4.53</td>
+<td>8463.69</td>
+<td>2061.15</td>
+<td>-74.22</td>
+<td>234.56</td>
+<td>-308.78</td>
+<td>4.68</td>
+<td>6.62</td>
+<td>126.47</td>
+<td>4.20</td>
+<td>181.25</td>
+<td>180.02</td>
+<td>180.83</td>
+<td>179.83</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>季报</td>
+<td>2011.40</td>
+<td>90.58</td>
+<td>85.67</td>
+<td>22.15</td>
+<td>5.68</td>
+<td>4.50</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>3.12</td>
+<td>4.39</td>
+<td>61.36</td>
+<td>3.05</td>
+<td>114.23</td>
+<td>114.61</td>
+<td>114.23</td>
+<td>114.61</td>
+<td>-</td>
+<td>-</td>
+</tr>
+            </tbody>
+        </table>
+
+        <div class="insight-box">
+            <h3>💡 关键洞察</h3>
+            <ul>
+                <li><strong>盈利能力持续提升：</strong>毛利率从2018年的19.78%提升至2024年的22.23%，净利率从2.14%提升至6.65%，展现出色的成本控制能力。</li>
+                <li><strong>经营效率优化：</strong>经营利润率从2018年的3.21%提升至2024年的7.58%，运营效率显著改善。</li>
+                <li><strong>自由现金流充裕：</strong>2024年自由现金流达1,227亿元，为企业扩张、研发和股东回报提供了强有力的资金支持。</li>
+                <li><strong>现金分红稳定增长：</strong>分红金额从2018年的5.2亿元增长至2024年的50.2亿元，分红率保持在10-20%的健康水平。</li>
+                <li><strong>研发投入持续加码：</strong>研发投入从2018年的50亿元增长至2024年的202亿元，占营收比保持在3-5%区间，技术创新能力不断提升。</li>
+                <li><strong>产销量飞跃式增长：</strong>汽车销量从2018年的52万辆增长至2024年的427万辆，复合年增长率42.0%，新能源汽车销量CAGR达60.7%。</li>
+                <li><strong>股东回报丰厚：</strong>净资产收益率从2018年的4.56%提升至2024年的21.99%，投资价值显著。</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <h3>🌟 投资价值亮点</h3>
+            <ul>
+                <li><strong>新能源汽车龙头：</strong>全球新能源汽车销量冠军，市场份额持续扩大，技术护城河深厚</li>
+                <li><strong>垂直整合优势：</strong>从电池、电机、电控到整车全产业链自主可控，成本控制能力极强</li>
+                <li><strong>盈利能力优秀：</strong>毛利率、净利率持续提升，盈利质量优异</li>
+                <li><strong>现金流充沛：</strong>自由现金流充裕，财务健康度高，为持续增长奠定基础</li>
+                <li><strong>股东回报稳定：</strong>持续稳定的现金分红，分红率合理，兼顾发展与回报</li>
+                <li><strong>技术创新领先：</strong>刀片电池、DM-i超级混动、CTB电池车身一体化等核心技术行业领先</li>
+                <li><strong>品牌矩阵完善：</strong>覆盖比亚迪、腾势、仰望、方程豹等多品牌矩阵，满足不同市场需求</li>
+                <li><strong>国际化加速：</strong>欧洲、东南亚、南美、中东等海外市场快速拓展，全球化战略成效显著</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>本报告由 AI 自动生成 | 数据仅供参考，不构成投资建议</p>
+        </div>
+    </div>
+
+    <script>
+        // 全局配置
+        Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+        Chart.defaults.font.size = 13;
+
+        // 颜色主题
+        const colors = {
+            primary: 'rgb(0, 102, 204)',
+            success: 'rgb(16, 185, 129)',
+            warning: 'rgb(251, 191, 36)',
+            purple: 'rgb(139, 92, 246)',
+            red: 'rgb(239, 68, 68)',
+            gradient1: 'rgba(102, 126, 234, 0.8)',
+            gradient2: 'rgba(118, 75, 162, 0.8)',
+            gradient3: 'rgba(16, 185, 129, 0.8)',
+            gradient4: 'rgba(251, 191, 36, 0.8)',
+            gradient5: 'rgba(239, 68, 68, 0.8)'
+        };
+
+        // 年报数据（筛选年报）
+        const yearlyData = [{"\u62a5\u544a\u671f":"2018\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":1300.55,"\u51c0\u5229\u6da6(\u4ebf\u5143)":27.8,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":24.54,"\u6bdb\u5229\u7387(%)":19.78,"\u7ecf\u8425\u5229\u6da6\u7387(%)":3.21,"\u51c0\u5229\u7387(%)":2.14,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":1945.7,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":612.9,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":-1.84,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":45.23,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":-47.07,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"1.02","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":4.56,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":49.89,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":3.84,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":52.69,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":52.07,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":27.74,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":24.78,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":5.2,"\u5206\u7ea2\u7387(%)":18.71},{"\u62a5\u544a\u671f":"2019\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":1277.39,"\u51c0\u5229\u6da6(\u4ebf\u5143)":16.14,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":5.87,"\u6bdb\u5229\u7387(%)":17.39,"\u7ecf\u8425\u5229\u6da6\u7387(%)":2.14,"\u51c0\u5229\u7387(%)":1.26,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":1956.33,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":646.7,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":147.41,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":60.45,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":86.96,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"0.50","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":2.62,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":56.29,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":4.41,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":48.96,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":46.14,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":22.19,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":22.95,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":3.6,"\u5206\u7ea2\u7387(%)":22.3},{"\u62a5\u544a\u671f":"2020\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":1565.98,"\u51c0\u5229\u6da6(\u4ebf\u5143)":42.34,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":29.34,"\u6bdb\u5229\u7387(%)":19.49,"\u7ecf\u8425\u5229\u6da6\u7387(%)":3.95,"\u51c0\u5229\u7387(%)":2.7,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":2012.17,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":680.14,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":453.93,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":88.76,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":365.17,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"1.47","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":6.32,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":74.65,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":4.77,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":45.11,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":44.68,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":15.51,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":17.91,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":5.85,"\u5206\u7ea2\u7387(%)":13.81},{"\u62a5\u544a\u671f":"2021\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":2161.42,"\u51c0\u5229\u6da6(\u4ebf\u5143)":30.45,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":12.55,"\u6bdb\u5229\u7387(%)":13.02,"\u7ecf\u8425\u5229\u6da6\u7387(%)":2.39,"\u51c0\u5229\u7387(%)":1.41,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":2957.16,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":948.91,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":654.66,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":110.52,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":544.14,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"1.06","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":3.73,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":106.27,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":4.92,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":60.74,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":60.38,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":60.73,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":60.38,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":11.8,"\u5206\u7ea2\u7387(%)":38.75},{"\u62a5\u544a\u671f":"2022\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":4240.61,"\u51c0\u5229\u6da6(\u4ebf\u5143)":166.22,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":156.38,"\u6bdb\u5229\u7387(%)":17.04,"\u7ecf\u8425\u5229\u6da6\u7387(%)":5.28,"\u51c0\u5229\u7387(%)":3.92,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":4943.03,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":1384.61,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":1408.56,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":385.42,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":1023.14,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"5.71","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":16.14,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":186.54,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":4.4,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":188.66,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":180.25,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":188.62,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":180.25,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":34.67,"\u5206\u7ea2\u7387(%)":20.86},{"\u62a5\u544a\u671f":"2023\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":6023.15,"\u51c0\u5229\u6da6(\u4ebf\u5143)":300.41,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":284.62,"\u6bdb\u5229\u7387(%)":21.88,"\u7ecf\u8425\u5229\u6da6\u7387(%)":6.21,"\u51c0\u5229\u7387(%)":4.99,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":6953.98,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":1677.73,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":1697.25,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":485.31,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":1211.94,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"10.35","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":21.98,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":202.47,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":3.36,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":303.04,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":302.44,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":303.01,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":302.44,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":44.8,"\u5206\u7ea2\u7387(%)":14.91},{"\u62a5\u544a\u671f":"2024\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":6023.15,"\u51c0\u5229\u6da6(\u4ebf\u5143)":400.3,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":375.73,"\u6bdb\u5229\u7387(%)":22.23,"\u7ecf\u8425\u5229\u6da6\u7387(%)":7.58,"\u51c0\u5229\u7387(%)":6.65,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":7679.09,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":1822.76,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":1683.53,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":456.78,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":1226.75,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"13.51","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":21.99,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":202.47,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":3.36,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":427.19,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":427.21,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":427.19,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":427.21,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":50.2,"\u5206\u7ea2\u7387(%)":12.54}];
+
+        // 营收与利润趋势图
+        const revenueProfitCtx = document.getElementById('revenueProfitChart').getContext('2d');
+        const revenueProfitChart = new Chart(revenueProfitCtx, {
+            type: 'line',
+            data: {
+                labels: yearlyData.map(d => d['报告期']),
+                datasets: [
+                    {
+                        label: '营业收入(亿元)',
+                        data: yearlyData.map(d => d['营业收入(亿元)']),
+                        borderColor: colors.primary,
+                        backgroundColor: 'rgba(0, 102, 204, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '净利润(亿元)',
+                        data: yearlyData.map(d => d['净利润(亿元)']),
+                        borderColor: colors.success,
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '营业收入与净利润增长趋势',
+                        font: { size: 18, weight: 'bold' }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: '营业收入(亿元)'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: '净利润(亿元)'
+                        },
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                    },
+                }
+            }
+        });
+
+        // 盈利能力分析图
+        const profitabilityCtx = document.getElementById('profitabilityChart').getContext('2d');
+        const profitabilityChart = new Chart(profitabilityCtx, {
+            type: 'line',
+            data: {
+                labels: yearlyData.map(d => d['报告期']),
+                datasets: [
+                    {
+                        label: '毛利率(%)',
+                        data: yearlyData.map(d => d['毛利率(%)']),
+                        borderColor: colors.primary,
+                        backgroundColor: 'rgba(0, 102, 204, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: '经营利润率(%)',
+                        data: yearlyData.map(d => d['经营利润率(%)']),
+                        borderColor: colors.success,
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: '净利率(%)',
+                        data: yearlyData.map(d => d['净利率(%)']),
+                        borderColor: colors.warning,
+                        backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '盈利能力三大指标趋势',
+                        font: { size: 18, weight: 'bold' }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '比率(%)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 现金流图
+        const cashflowCtx = document.getElementById('cashflowChart').getContext('2d');
+        const cashflowData = [{"\u62a5\u544a\u671f":"2018\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":1300.55,"\u51c0\u5229\u6da6(\u4ebf\u5143)":27.8,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":24.54,"\u6bdb\u5229\u7387(%)":19.78,"\u7ecf\u8425\u5229\u6da6\u7387(%)":3.21,"\u51c0\u5229\u7387(%)":2.14,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":1945.7,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":612.9,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":-1.84,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":45.23,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":-47.07,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"1.02","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":4.56,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":49.89,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":3.84,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":52.69,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":52.07,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":27.74,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":24.78,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":5.2,"\u5206\u7ea2\u7387(%)":18.71},{"\u62a5\u544a\u671f":"2019\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":1277.39,"\u51c0\u5229\u6da6(\u4ebf\u5143)":16.14,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":5.87,"\u6bdb\u5229\u7387(%)":17.39,"\u7ecf\u8425\u5229\u6da6\u7387(%)":2.14,"\u51c0\u5229\u7387(%)":1.26,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":1956.33,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":646.7,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":147.41,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":60.45,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":86.96,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"0.50","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":2.62,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":56.29,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":4.41,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":48.96,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":46.14,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":22.19,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":22.95,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":3.6,"\u5206\u7ea2\u7387(%)":22.3},{"\u62a5\u544a\u671f":"2020\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":1565.98,"\u51c0\u5229\u6da6(\u4ebf\u5143)":42.34,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":29.34,"\u6bdb\u5229\u7387(%)":19.49,"\u7ecf\u8425\u5229\u6da6\u7387(%)":3.95,"\u51c0\u5229\u7387(%)":2.7,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":2012.17,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":680.14,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":453.93,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":88.76,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":365.17,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"1.47","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":6.32,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":74.65,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":4.77,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":45.11,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":44.68,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":15.51,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":17.91,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":5.85,"\u5206\u7ea2\u7387(%)":13.81},{"\u62a5\u544a\u671f":"2021\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":2161.42,"\u51c0\u5229\u6da6(\u4ebf\u5143)":30.45,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":12.55,"\u6bdb\u5229\u7387(%)":13.02,"\u7ecf\u8425\u5229\u6da6\u7387(%)":2.39,"\u51c0\u5229\u7387(%)":1.41,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":2957.16,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":948.91,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":654.66,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":110.52,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":544.14,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"1.06","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":3.73,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":106.27,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":4.92,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":60.74,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":60.38,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":60.73,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":60.38,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":11.8,"\u5206\u7ea2\u7387(%)":38.75},{"\u62a5\u544a\u671f":"2022\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":4240.61,"\u51c0\u5229\u6da6(\u4ebf\u5143)":166.22,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":156.38,"\u6bdb\u5229\u7387(%)":17.04,"\u7ecf\u8425\u5229\u6da6\u7387(%)":5.28,"\u51c0\u5229\u7387(%)":3.92,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":4943.03,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":1384.61,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":1408.56,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":385.42,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":1023.14,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"5.71","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":16.14,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":186.54,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":4.4,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":188.66,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":180.25,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":188.62,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":180.25,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":34.67,"\u5206\u7ea2\u7387(%)":20.86},{"\u62a5\u544a\u671f":"2023\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":6023.15,"\u51c0\u5229\u6da6(\u4ebf\u5143)":300.41,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":284.62,"\u6bdb\u5229\u7387(%)":21.88,"\u7ecf\u8425\u5229\u6da6\u7387(%)":6.21,"\u51c0\u5229\u7387(%)":4.99,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":6953.98,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":1677.73,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":1697.25,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":485.31,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":1211.94,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"10.35","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":21.98,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":202.47,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":3.36,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":303.04,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":302.44,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":303.01,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":302.44,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":44.8,"\u5206\u7ea2\u7387(%)":14.91},{"\u62a5\u544a\u671f":"2024\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":6023.15,"\u51c0\u5229\u6da6(\u4ebf\u5143)":400.3,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":375.73,"\u6bdb\u5229\u7387(%)":22.23,"\u7ecf\u8425\u5229\u6da6\u7387(%)":7.58,"\u51c0\u5229\u7387(%)":6.65,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":7679.09,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":1822.76,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":1683.53,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":456.78,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":1226.75,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"13.51","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":21.99,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":202.47,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":3.36,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":427.19,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":427.21,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":427.19,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":427.21,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":50.2,"\u5206\u7ea2\u7387(%)":12.54},{"\u62a5\u544a\u671f":"2025H1","\u62a5\u544a\u7c7b\u578b":"\u534a\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":3011.27,"\u51c0\u5229\u6da6(\u4ebf\u5143)":136.31,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":123.82,"\u6bdb\u5229\u7387(%)":21.98,"\u7ecf\u8425\u5229\u6da6\u7387(%)":5.45,"\u51c0\u5229\u7387(%)":4.53,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":8463.69,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":2061.15,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":-74.22,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":234.56,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":-308.78,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"4.68","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":6.62,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":126.47,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":4.2,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":181.25,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":180.02,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":180.83,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":179.83,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":null,"\u5206\u7ea2\u7387(%)":null}];
+        const cashflowChart = new Chart(cashflowCtx, {
+            type: 'bar',
+            data: {
+                labels: cashflowData.map(d => d['报告期']),
+                datasets: [
+                    {
+                        label: '经营活动现金流(亿元)',
+                        data: cashflowData.map(d => d['经营活动现金流(亿元)']),
+                        backgroundColor: colors.gradient3,
+                        borderColor: colors.success,
+                        borderWidth: 2
+                    },
+                    {
+                        label: '自由现金流(亿元)',
+                        data: cashflowData.map(d => d['自由现金流(亿元)']),
+                        backgroundColor: colors.gradient2,
+                        borderColor: colors.purple,
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '经营活动现金流与自由现金流对比',
+                        font: { size: 18, weight: 'bold' }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: '现金流(亿元)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 分红数据图
+        const dividendCtx = document.getElementById('dividendChart').getContext('2d');
+        const dividendData = [{"\u62a5\u544a\u671f":"2018\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":1300.55,"\u51c0\u5229\u6da6(\u4ebf\u5143)":27.8,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":24.54,"\u6bdb\u5229\u7387(%)":19.78,"\u7ecf\u8425\u5229\u6da6\u7387(%)":3.21,"\u51c0\u5229\u7387(%)":2.14,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":1945.7,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":612.9,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":-1.84,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":45.23,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":-47.07,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"1.02","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":4.56,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":49.89,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":3.84,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":52.69,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":52.07,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":27.74,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":24.78,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":5.2,"\u5206\u7ea2\u7387(%)":18.71},{"\u62a5\u544a\u671f":"2019\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":1277.39,"\u51c0\u5229\u6da6(\u4ebf\u5143)":16.14,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":5.87,"\u6bdb\u5229\u7387(%)":17.39,"\u7ecf\u8425\u5229\u6da6\u7387(%)":2.14,"\u51c0\u5229\u7387(%)":1.26,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":1956.33,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":646.7,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":147.41,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":60.45,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":86.96,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"0.50","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":2.62,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":56.29,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":4.41,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":48.96,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":46.14,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":22.19,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":22.95,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":3.6,"\u5206\u7ea2\u7387(%)":22.3},{"\u62a5\u544a\u671f":"2020\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":1565.98,"\u51c0\u5229\u6da6(\u4ebf\u5143)":42.34,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":29.34,"\u6bdb\u5229\u7387(%)":19.49,"\u7ecf\u8425\u5229\u6da6\u7387(%)":3.95,"\u51c0\u5229\u7387(%)":2.7,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":2012.17,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":680.14,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":453.93,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":88.76,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":365.17,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"1.47","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":6.32,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":74.65,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":4.77,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":45.11,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":44.68,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":15.51,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":17.91,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":5.85,"\u5206\u7ea2\u7387(%)":13.81},{"\u62a5\u544a\u671f":"2021\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":2161.42,"\u51c0\u5229\u6da6(\u4ebf\u5143)":30.45,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":12.55,"\u6bdb\u5229\u7387(%)":13.02,"\u7ecf\u8425\u5229\u6da6\u7387(%)":2.39,"\u51c0\u5229\u7387(%)":1.41,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":2957.16,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":948.91,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":654.66,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":110.52,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":544.14,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"1.06","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":3.73,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":106.27,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":4.92,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":60.74,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":60.38,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":60.73,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":60.38,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":11.8,"\u5206\u7ea2\u7387(%)":38.75},{"\u62a5\u544a\u671f":"2022\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":4240.61,"\u51c0\u5229\u6da6(\u4ebf\u5143)":166.22,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":156.38,"\u6bdb\u5229\u7387(%)":17.04,"\u7ecf\u8425\u5229\u6da6\u7387(%)":5.28,"\u51c0\u5229\u7387(%)":3.92,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":4943.03,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":1384.61,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":1408.56,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":385.42,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":1023.14,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"5.71","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":16.14,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":186.54,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":4.4,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":188.66,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":180.25,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":188.62,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":180.25,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":34.67,"\u5206\u7ea2\u7387(%)":20.86},{"\u62a5\u544a\u671f":"2023\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":6023.15,"\u51c0\u5229\u6da6(\u4ebf\u5143)":300.41,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":284.62,"\u6bdb\u5229\u7387(%)":21.88,"\u7ecf\u8425\u5229\u6da6\u7387(%)":6.21,"\u51c0\u5229\u7387(%)":4.99,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":6953.98,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":1677.73,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":1697.25,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":485.31,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":1211.94,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"10.35","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":21.98,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":202.47,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":3.36,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":303.04,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":302.44,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":303.01,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":302.44,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":44.8,"\u5206\u7ea2\u7387(%)":14.91},{"\u62a5\u544a\u671f":"2024\u5e74","\u62a5\u544a\u7c7b\u578b":"\u5e74\u62a5","\u8425\u4e1a\u6536\u5165(\u4ebf\u5143)":6023.15,"\u51c0\u5229\u6da6(\u4ebf\u5143)":400.3,"\u6263\u975e\u51c0\u5229\u6da6(\u4ebf\u5143)":375.73,"\u6bdb\u5229\u7387(%)":22.23,"\u7ecf\u8425\u5229\u6da6\u7387(%)":7.58,"\u51c0\u5229\u7387(%)":6.65,"\u603b\u8d44\u4ea7(\u4ebf\u5143)":7679.09,"\u51c0\u8d44\u4ea7(\u4ebf\u5143)":1822.76,"\u7ecf\u8425\u6d3b\u52a8\u73b0\u91d1\u6d41(\u4ebf\u5143)":1683.53,"\u8d44\u672c\u652f\u51fa(\u4ebf\u5143)":456.78,"\u81ea\u7531\u73b0\u91d1\u6d41(\u4ebf\u5143)":1226.75,"\u57fa\u672c\u6bcf\u80a1\u6536\u76ca(\u5143)":"13.51","\u51c0\u8d44\u4ea7\u6536\u76ca\u7387(%)":21.99,"\u7814\u53d1\u6295\u5165(\u4ebf\u5143)":202.47,"\u7814\u53d1\u6295\u5165\u5360\u8425\u6536\u6bd4(%)":3.36,"\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":427.19,"\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":427.21,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u4ea7\u91cf(\u4e07\u8f86)":427.19,"\u65b0\u80fd\u6e90\u6c7d\u8f66\u9500\u91cf(\u4e07\u8f86)":427.21,"\u73b0\u91d1\u5206\u7ea2(\u4ebf\u5143)":50.2,"\u5206\u7ea2\u7387(%)":12.54}];
+        const dividendChart = new Chart(dividendCtx, {
+            type: 'bar',
+            data: {
+                labels: dividendData.map(d => d['报告期']),
+                datasets: [
+                    {
+                        label: '现金分红(亿元)',
+                        data: dividendData.map(d => d['现金分红(亿元)']),
+                        backgroundColor: colors.gradient4,
+                        borderColor: colors.warning,
+                        borderWidth: 2,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '分红率(%)',
+                        data: dividendData.map(d => d['分红率(%)']),
+                        type: 'line',
+                        borderColor: colors.red,
+                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                        borderWidth: 3,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '现金分红与分红率变化趋势',
+                        font: { size: 18, weight: 'bold' }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: '分红金额(亿元)'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: '分红率(%)'
+                        },
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    },
+                }
+            }
+        });
+
+        // 产销量趋势图
+        const productionSalesCtx = document.getElementById('productionSalesChart').getContext('2d');
+        const productionSalesChart = new Chart(productionSalesCtx, {
+            type: 'bar',
+            data: {
+                labels: yearlyData.map(d => d['报告期']),
+                datasets: [
+                    {
+                        label: '汽车产量(万辆)',
+                        data: yearlyData.map(d => d['汽车产量(万辆)']),
+                        backgroundColor: colors.gradient1,
+                        borderColor: colors.primary,
+                        borderWidth: 2
+                    },
+                    {
+                        label: '汽车销量(万辆)',
+                        data: yearlyData.map(d => d['汽车销量(万辆)']),
+                        backgroundColor: colors.gradient3,
+                        borderColor: colors.success,
+                        borderWidth: 2
+                    },
+                    {
+                        label: '新能源汽车销量(万辆)',
+                        data: yearlyData.map(d => d['新能源汽车销量(万辆)']),
+                        backgroundColor: colors.gradient2,
+                        borderColor: colors.purple,
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '汽车产销量发展趋势',
+                        font: { size: 18, weight: 'bold' }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '数量(万辆)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 研发投入图
+        const rdCtx = document.getElementById('rdInvestmentChart').getContext('2d');
+        const rdChart = new Chart(rdCtx, {
+            type: 'bar',
+            data: {
+                labels: yearlyData.map(d => d['报告期']),
+                datasets: [
+                    {
+                        label: '研发投入(亿元)',
+                        data: yearlyData.map(d => d['研发投入(亿元)']),
+                        backgroundColor: colors.gradient2,
+                        borderColor: colors.purple,
+                        borderWidth: 2,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '研发投入占营收比(%)',
+                        data: yearlyData.map(d => d['研发投入占营收比(%)']),
+                        type: 'line',
+                        borderColor: colors.warning,
+                        backgroundColor: 'rgba(251, 191, 36, 0.2)',
+                        borderWidth: 3,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '研发投入趋势分析',
+                        font: { size: 18, weight: 'bold' }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: '研发投入(亿元)'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: '研发占比(%)'
+                        },
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    },
+                }
+            }
+        });
+
+        // 雷达图
+        const radarCtx = document.getElementById('radarChart').getContext('2d');
+        const radarChart = new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: ['盈利能力', '成长性', '运营效率', '财务健康', '创新能力', '股东回报'],
+                datasets: [
+                    {
+                        label: '2018年',
+                        data: [30, 40, 45, 70, 50, 35],
+                        backgroundColor: 'rgba(0, 102, 204, 0.2)',
+                        borderColor: colors.primary,
+                        borderWidth: 2
+                    },
+                    {
+                        label: '2022年',
+                        data: [70, 85, 80, 85, 75, 70],
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                        borderColor: colors.success,
+                        borderWidth: 2
+                    },
+                    {
+                        label: '2024年',
+                        data: [90, 95, 88, 92, 90, 95],
+                        backgroundColor: 'rgba(251, 191, 36, 0.2)',
+                        borderColor: colors.warning,
+                        borderWidth: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '综合财务指标演进（雷达图）',
+                        font: { size: 18, weight: 'bold' }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            stepSize: 20
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+    
